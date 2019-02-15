@@ -5,8 +5,7 @@
   "scripts": {
     "start": "ts-node src/server.ts",
     "dev": "nodemon",
-    "test": "mocha -r ts-node/register tests/**/*.spec.ts",
-    "watch": "nodemon --watch 'src/**/*.ts' --exec ts-node src/server.ts"
+    "test": "mocha -r ts-node/register tests/**/*.spec.ts"
   },
   "dependencies": {
     "express": "~4.16.0",
