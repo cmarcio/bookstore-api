@@ -1,4 +1,5 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, Model } from 'mongoose';
+import { IBook } from '../interfaces/IBook';
 
 const BookSchema = new Schema({
     title: {
@@ -15,6 +16,8 @@ const BookSchema = new Schema({
         type: String,
         trim: true,
         required: true,
+        index: true,
+        default: 'Unavailable'
     },
     language: {
         type: String,
@@ -22,4 +25,4 @@ const BookSchema = new Schema({
     }
 });
 
-export default mongoose.model('Book', BookSchema);
+export const Book: Model<IBook> = mongoose.model<IBook>('Book', BookSchema);
