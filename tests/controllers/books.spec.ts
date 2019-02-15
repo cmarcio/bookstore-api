@@ -16,7 +16,7 @@ describe('Books Costroller', () => {
       await request(app)
         .get('/books')
         .expect(200);
-    })
+    });
   });
 
   describe('GET /book/id', () => {
