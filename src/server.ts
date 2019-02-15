@@ -6,8 +6,6 @@
 import app from './app';
 import http from 'http';
 
-const debug = require('debug')('bookstore-api:server');
-
 /**
  * Get port from environment and store in Express.
  */
@@ -77,5 +75,5 @@ function onError(error: any) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-  debug(`Listening on ${bind}`);
+  console.info(`Listening on ${bind}`);
 }

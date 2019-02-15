@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'path';
-// import morgan from 'morgan';
+import morgan from 'morgan';
 
 import * as bookController from './controllers/books';
 
@@ -10,7 +10,7 @@ const app = express();
 /**
  * Middleware
  */
-// app.use(morgan('dev'));
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
