@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node ./src/bin/www"
+    "start": "ts-node ./src/server.ts"
   },
   "dependencies": {
     "debug": "~2.6.9",
