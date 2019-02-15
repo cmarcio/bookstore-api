@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import morgan from 'morgan';
 
-import * as bookController from './controllers/books';
+import BookRouter from './routes/BookRouter';
 
 // Create express server
 const app = express();
@@ -16,10 +16,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 /**
- * Book Routes
+ * Route Handlers
  */
-app.post('/book', bookController.postBook);
-app.get('/books/:id', bookController.getBook);
-app.get('/books', bookController.getBooks);
+app.use(BookRouter);
+
+/**
+ * Route not found
+ */
+app.all('*', (req, res) => res.sendStatus(404));
 
 export default app;
