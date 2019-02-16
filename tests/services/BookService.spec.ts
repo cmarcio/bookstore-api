@@ -1,12 +1,45 @@
-import { Book } from '../../src/models/Book';
+import chai, { expect } from 'chai';
+import sinon, { SinonStub } from 'sinon';
+
+import { MongoDao } from '../../src/models/MongoDao';
+import { IBook } from '../../src/interfaces/IBook';
+import BookService from '../../src/services/BookService';
+import ApplicationError from '../../src/models/ApplicationError';
+
+chai.use(require('sinon-chai'));
+chai.use(require('chai-as-promised'));
+
+const book: IBook = {
+    name: 'Clean Code',
+    isbn: '9780132350884',
+    language: 'en',
+    description: `Even bad code can function.
+        But if code isn’t clean, it can bring
+        a development organization to its knees.`,
+};
 
 describe('Book Service', () => {
+    const sandbox = sinon.createSandbox();
+    afterEach(() => sandbox.restore());
+
     describe('saveBook', () => {
-        it('should save a new book in the database');
+        let stubSaveBook: SinonStub;
 
-        it('should throw an error if the book is invalid');
+        beforeEach(() => stubSaveBook = sandbox.stub(MongoDao.prototype, 'save'));
+        
+        it('should save a new book in the database', async () => {
+            sandbox.stub(MongoDao.prototype, 'findOne');
+            await BookService.saveBook(book);
+            expect(stubSaveBook).to.have.been.calledOnce;
+            expect(stubSaveBook).to.have.been.calledWith(book);
+        });
 
-        it('should throw an error if the book already exists');
+        it('should throw an error if the book already exists', async () => {
+            sandbox.stub(MongoDao.prototype, 'findOne').resolves(book);
+            const saveBookPromise = BookService.saveBook(book);
+            await expect(saveBookPromise).to.have.been.rejectedWith(ApplicationError.BOOK_ALREADY_EXISTS);
+            expect(stubSaveBook).to.not.have.been.called;
+        });
     });
 
     describe('getBooks', () => {
