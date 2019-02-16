@@ -19,6 +19,7 @@ const saveBook = async (newBook: IBook): Promise<void> => {
  * Get all book documents from the database
  */
 const getBooks = async (): Promise<IBook[]> => {
+    // TODO implement paginantion
     const books = await BookDao.find({});
     return books;
 };

@@ -37,9 +37,17 @@ describe('Book Service', () => {
     });
 
     describe('getBooks', () => {
-        test.todo('should return an empty array if there is no books in the database');
+        test('should return an empty array if there is no books in the database', async () => {
+            jest.spyOn(MongoDao.prototype, 'find').mockResolvedValue([]);
+            const books = await BookService.getBooks();
+            expect(books).toEqual([]);
+        });
         
-        test.todo('should get all the books from the database');
+        test('should get all the books from the database', async () => {
+            jest.spyOn(MongoDao.prototype, 'find').mockResolvedValue([ book ]);
+            const books = await BookService.getBooks();
+            expect(books).toEqual([ book ])
+        });
     });
 
     describe('getBookById', () => {
