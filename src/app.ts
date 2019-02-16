@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import morgan from 'morgan';
 
-import BookRouter from './routes/BookRouter';
+import { BookRouter } from './routes/BookRouter';
 
 // Create express server
 const app = express();

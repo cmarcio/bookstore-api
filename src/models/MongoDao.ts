@@ -1,5 +1,5 @@
 import { MongoClient, Collection } from 'mongodb';
-import ApplicationError from './ApplicationError';
+import { ApplicationError } from './ApplicationError';
 
 const url = process.env.MONGODB_URL || 'mongodb://localhost:27017';
 const database = process.env.MONGODB_DBNAME || 'library';

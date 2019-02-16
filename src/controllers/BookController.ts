@@ -24,8 +24,8 @@ const getBooks = (req: Request, res: Response, next: NextFunction) => {
   res.send('get books');
 };
 
-export default {
+export const BookController = {
   postBook,
   getBook,
   getBooks,
-};
+}

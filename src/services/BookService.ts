@@ -1,6 +1,6 @@
+import { ApplicationError } from '../models/ApplicationError';
 import { IBook } from '../interfaces/IBook';
 import { MongoDao } from '../models/MongoDao';
-import ApplicationError from '../models/ApplicationError';
 
 const BookDao = new MongoDao<IBook>('Book');
 
@@ -39,7 +39,7 @@ const getBookByISBN = async (isbn: string): Promise<IBook> => {
     return book;
 };
 
-export default {
+export const BookService = {
     saveBook,
     getBooks,
     getBookById,

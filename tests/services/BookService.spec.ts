@@ -1,10 +1,10 @@
 import chai, { expect } from 'chai';
 import sinon, { SinonStub } from 'sinon';
 
-import { MongoDao } from '../../src/models/MongoDao';
+import { ApplicationError } from '../../src/models/ApplicationError';
+import { BookService } from '../../src/services/BookService';
 import { IBook } from '../../src/interfaces/IBook';
-import BookService from '../../src/services/BookService';
-import ApplicationError from '../../src/models/ApplicationError';
+import { MongoDao } from '../../src/models/MongoDao';
 
 chai.use(require('sinon-chai'));
 chai.use(require('chai-as-promised'));
