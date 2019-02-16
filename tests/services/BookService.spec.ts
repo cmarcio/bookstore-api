@@ -1,13 +1,9 @@
-import chai, { expect } from 'chai';
-import sinon, { SinonStub } from 'sinon';
-
 import { ApplicationError } from '../../src/models/ApplicationError';
 import { BookService } from '../../src/services/BookService';
 import { IBook } from '../../src/interfaces/IBook';
 import { MongoDao } from '../../src/models/MongoDao';
 
-chai.use(require('sinon-chai'));
-chai.use(require('chai-as-promised'));
+jest.mock('../../src/models/MongoDao');
 
 const book: IBook = {
     name: 'Clean Code',
@@ -19,38 +15,36 @@ const book: IBook = {
 };
 
 describe('Book Service', () => {
-    const sandbox = sinon.createSandbox();
-    afterEach(() => sandbox.restore());
-
     describe('saveBook', () => {
-        let stubSaveBook: SinonStub;
+        let spySaveBook: jest.SpyInstance;
 
-        beforeEach(() => stubSaveBook = sandbox.stub(MongoDao.prototype, 'save'));
+        beforeEach(() => spySaveBook = jest.spyOn(MongoDao.prototype, 'save'));
+
+        afterEach(() => spySaveBook.mockRestore());
         
-        it('should save a new book in the database', async () => {
-            sandbox.stub(MongoDao.prototype, 'findOne');
+        test('should save a new book in the database', async () => {
+            jest.spyOn(MongoDao.prototype, 'findOne');
             await BookService.saveBook(book);
-            expect(stubSaveBook).to.have.been.calledOnce;
-            expect(stubSaveBook).to.have.been.calledWith(book);
+            expect(spySaveBook).toHaveBeenCalledWith(book);
         });
 
-        it('should throw an error if the book already exists', async () => {
-            sandbox.stub(MongoDao.prototype, 'findOne').resolves(book);
+        test('should throw an error if the book already exists', async () => {
+            jest.spyOn(MongoDao.prototype, 'findOne').mockResolvedValue(book);
             const saveBookPromise = BookService.saveBook(book);
-            await expect(saveBookPromise).to.have.been.rejectedWith(ApplicationError.BOOK_ALREADY_EXISTS);
-            expect(stubSaveBook).to.not.have.been.called;
+            await expect(saveBookPromise).rejects.toThrow(ApplicationError.BOOK_ALREADY_EXISTS);
+            expect(spySaveBook).not.toHaveBeenCalled();
         });
     });
 
     describe('getBooks', () => {
-        it('should return an empty array if there is no books in the database');
+        test.todo('should return an empty array if there is no books in the database');
         
-        it('should get all the books from the database');
+        test.todo('should get all the books from the database');
     });
 
     describe('getBookById', () => {
-        it('should get the book from the database');
+        test.todo('should get the book from the database');
 
-        it('should return undefined if the book was not found');
+        test.todo('should return undefined if the book was not found');
     });
 });

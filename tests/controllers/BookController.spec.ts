@@ -4,7 +4,7 @@ import app from '../../src/app';
 
 describe('Books Costroller', () => {
   describe('POST /book', () => {
-    it('should respond with 200', async () => {
+    test('should respond with 200', async () => {
       await request(app)
         .post('/book')
         .expect(200);
@@ -12,7 +12,7 @@ describe('Books Costroller', () => {
   });
 
   describe('GET /books', () => {
-    it('should respond with 200', async () => {
+    test('should respond with 200', async () => {
       await request(app)
         .get('/books')
         .expect(200);
@@ -22,7 +22,7 @@ describe('Books Costroller', () => {
   describe('GET /book/id', () => {
     const id = 23;
 
-    it('should respond with 200', async () => {
+    test('should respond with 200', async () => {
       await request(app)
         .get(`/books/${id}`)
         .expect(200);
