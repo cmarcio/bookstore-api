@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { ApplicationError } from '../../src/models/ApplicationError';
 import { BookService } from '../../src/services/BookService';
 import { IBook } from '../../src/interfaces/IBook';
@@ -6,6 +7,7 @@ import { MongoDao } from '../../src/models/MongoDao';
 jest.mock('../../src/models/MongoDao');
 
 const book: IBook = {
+    _id: new ObjectId(),
     name: 'Clean Code',
     isbn: '9780132350884',
     language: 'en',
@@ -51,8 +53,18 @@ describe('Book Service', () => {
     });
 
     describe('getBookById', () => {
-        test.todo('should get the book from the database');
+        test('should get the book from the database', async () => {
+            const findOneSpy = jest.spyOn(MongoDao.prototype, 'findOne').mockResolvedValue(book);
+            const bookFound = await BookService.getBookById(book._id);
+            expect(bookFound).toEqual(book);
+            expect(findOneSpy).toHaveBeenCalledWith({ _id: book._id });
+        });
 
-        test.todo('should return undefined if the book was not found');
+        test('should return undefined if the book was not found', async () => {
+            const findOneSpy = jest.spyOn(MongoDao.prototype, 'findOne');
+            const bookFound = await BookService.getBookById(book._id);
+            expect(bookFound).toBeUndefined;
+            expect(findOneSpy).toHaveBeenCalledWith({ _id: book._id });
+        });
     });
 });

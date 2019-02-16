@@ -1,3 +1,4 @@
+import { ObjectID } from 'mongodb';
 import { ApplicationError } from '../models/ApplicationError';
 import { IBook } from '../interfaces/IBook';
 import { MongoDao } from '../models/MongoDao';
@@ -27,8 +28,8 @@ const getBooks = async (): Promise<IBook[]> => {
 /**
  * Get a book document by the id attribute
  */
-const getBookById = async (id: string): Promise<IBook> => {
-    const book = await BookDao.findOne({ id });
+const getBookById = async (_id: ObjectID): Promise<IBook> => {
+    const book = await BookDao.findOne({ _id });
     return book;
 };
 
