@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import morgan from 'morgan';
+import expressValidator from 'express-validator';
 
 import { BookRouter } from './routes/BookRouter';
 import { ApplicationErrorHandler } from './middleware/ApplicationErrorHandler';
@@ -16,6 +17,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressValidator())
 
 /**
  * Route Handlers

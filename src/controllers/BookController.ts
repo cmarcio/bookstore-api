@@ -6,8 +6,9 @@ import { BookService } from '../services/BookService';
  * Save a new book in the database
  */
 const postBook = async (req: Request, res: Response, next: NextFunction) => {
+    const { title, description, isbn, language } = req.body;
     try {
-        await BookService.insertBook(req.body);
+        await BookService.insertBook({ title, description, isbn, language });
         res.status(201).send(req.body);
     } catch (error) {
         next(error);

@@ -15,7 +15,7 @@ const book: IBook = {
         create more flexible, elegant, and ultimately reusable designs without having to rediscover
         the design solutions themselves.`,
     isbn: "0201633612",
-    language: 'en'
+    language: 'EN'
 };
 
 describe('Books Costroller', () => {
@@ -55,11 +55,23 @@ describe('Books Costroller', () => {
     });
 
     describe('GET /books/id', () => {
-        test('should respond with 200', async () => {
+        test('should return the book', async () => {
             const { body } = await request(app)
                 .get(`/books/${bookId}`)
                 .expect(200);
-            expect(book).toEqual({ ...book })
+            expect(body).toEqual({ ...book, _id: bookId });
+        });
+
+        test('should return an error if the book is not found', async () => {
+            await request(app)
+                .get(`/books/5c69582ebf46b6141b07ff34`)
+                .expect(404);
+        });
+
+        test('should return an error if the id is not valid', async () => {
+            await request(app)
+                .get('/books/123456')
+                .expect(422);
         });
     });
 });
