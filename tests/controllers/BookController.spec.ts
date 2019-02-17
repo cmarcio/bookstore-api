@@ -2,9 +2,9 @@
 import request from 'supertest';
 import app from '../../src/app';
 import { IBook } from '../../src/interfaces/IBook';
-import { MongoDao } from '../../src/models/MongoDao';
+import { BookDao } from '../../src/models/BookDao';
 
-const BookDao = new MongoDao('Book');
+const bookDao = new BookDao();
 
 let bookId: string;
 const book: IBook = {
@@ -19,9 +19,9 @@ const book: IBook = {
 };
 
 describe('Books Costroller', () => {
-    beforeAll(async () => await BookDao.delete({}));
+    beforeAll(async () => await bookDao.delete({}));
 
-    afterAll(async () => await BookDao.delete({}));
+    afterAll(async () => await bookDao.delete({}));
 
     describe('POST /book', () => {
         test('should create a new book', async () => {

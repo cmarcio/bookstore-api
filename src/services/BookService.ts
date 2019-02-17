@@ -1,9 +1,9 @@
 import { ObjectID } from 'mongodb';
 import { ApplicationError, ErrorCode } from '../models/ApplicationError';
 import { IBook } from '../interfaces/IBook';
-import { MongoDao } from '../models/MongoDao';
+import { BookDao } from '../models/BookDao';
 
-const BookDao = new MongoDao<IBook>('Book');
+const bookDao = new BookDao();
 
 /**
  * Save a new book document in the database
@@ -13,7 +13,7 @@ const insertBook = async (newBook: IBook): Promise<void> => {
     if (sameISBN) {
         throw new ApplicationError(ErrorCode.BOOK_ALREADY_EXISTS);
     }
-    await BookDao.insertOne(newBook);
+    await bookDao.insertOne(newBook);
 };
 
 /**
@@ -21,7 +21,7 @@ const insertBook = async (newBook: IBook): Promise<void> => {
  */
 const getBooks = async (): Promise<IBook[]> => {
     // TODO implement paginantion
-    const books = await BookDao.find({});
+    const books = await bookDao.find({});
     return books;
 };
 
@@ -29,7 +29,7 @@ const getBooks = async (): Promise<IBook[]> => {
  * Get a book document by the id attribute
  */
 const getBookById = async (id: string): Promise<IBook> => {
-    const book = await BookDao.findOne({ _id: new ObjectID(id) });
+    const book = await bookDao.findOne({ _id: new ObjectID(id) });
     if (book) {
         return book;
     } else {
@@ -41,7 +41,7 @@ const getBookById = async (id: string): Promise<IBook> => {
  * Get a book document by the isbn attribute
  */
 const getBookByISBN = async (isbn: string): Promise<IBook> => {
-    const book = await BookDao.findOne({ isbn });
+    const book = await bookDao.findOne({ isbn });
     return book;
 };
 
