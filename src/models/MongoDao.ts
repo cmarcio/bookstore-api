@@ -28,7 +28,7 @@ export class MongoDao<T> {
         }
     };
     
-    private async checkConnection() {
+    async checkConnection() {
         if (!this.isConnected()) {
             await this.connect();
         }
@@ -42,6 +42,11 @@ export class MongoDao<T> {
     async find(query: Object): Promise<T[]> {
         await this.checkConnection();
         return this.collection.find(query).toArray();
+    }
+
+    async findOneAndUpdate(query: Object, values: Object) {
+        await this.checkConnection();
+        return this.collection.findOneAndUpdate(query, { $set: values});
     }
 
     async insertOne(document: T): Promise<void> {
