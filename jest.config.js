@@ -4,6 +4,7 @@ module.exports = {
       '<rootDir>/src',
     ],
     modulePaths: [
+      '<rootDir>',
       '<rootDir>/node_modules',
     ],
     testMatch: [
