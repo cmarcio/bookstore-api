@@ -6,6 +6,15 @@
  */
 import app from './app';
 import { createServer } from 'http';
+import { Scheduler } from './jobs/scheduler';
+import { BookScraper } from './models/BookScraper';
+
+/**
+ * Start the Book Scraper Scheduler
+ */
+const bookScraper = new BookScraper();
+const scheduler = new Scheduler(bookScraper);
+scheduler.start('0 0 * * * *'); // TODO use an environment variable to configure
 
 /**
  * Get port from environment and store in Express.

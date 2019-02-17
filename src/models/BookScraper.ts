@@ -2,11 +2,17 @@
 import { IBook } from '../interfaces/IBook';
 import { Scraper } from './Scraper';
 import { BookDao } from './BookDao';
+import { ISchedulable } from '../interfaces/ISchedulable';
 
-export class BookScraper extends Scraper<IBook> {
+export class BookScraper extends Scraper<IBook> implements ISchedulable {
 
     constructor() {
         super(new BookDao());
+    };
+
+    async runTask() {
+        await this.update();
+        console.log('Books update complete.')
     };
 
     /**
