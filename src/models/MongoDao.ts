@@ -1,5 +1,5 @@
 import { MongoClient, Collection } from 'mongodb';
-import { ApplicationError } from './ApplicationError';
+import { ApplicationError, ErrorCode } from './ApplicationError';
 
 const url = process.env.MONGODB_URL || 'mongodb://localhost:27017';
 const database = process.env.MONGODB_DBNAME || 'library';
@@ -10,7 +10,7 @@ export class MongoDao<T> {
     private collectionName: string;
 
     constructor(collectionName: string) {
-        this.client = new MongoClient(url);
+        this.client = new MongoClient(url, { useNewUrlParser: true });
         this.collectionName = collectionName;
     };
 
@@ -24,28 +24,33 @@ export class MongoDao<T> {
             this.collection = this.client.db(database).collection(this.collectionName);
         } catch (error) {
             console.error(error);
-            throw new Error(ApplicationError.DATABASE_CONNECTION_ERROR);
+            throw new ApplicationError(ErrorCode.DATABASE_CONNECTION_ERROR);
         }
     };
     
     private async checkConnection() {
         if (!this.isConnected()) {
-            this.connect();
+            await this.connect();
         }
     };
 
     async findOne(query: Object): Promise<T> {
-        this.checkConnection();
+        await this.checkConnection();
         return this.collection.findOne(query);
     }
 
     async find(query: Object): Promise<T[]> {
-        this.checkConnection();
+        await this.checkConnection();
         return this.collection.find(query).toArray();
     }
 
-    async save(document: T): Promise<void> {
-        this.checkConnection();
-        await this.collection.save(document);
+    async insertOne(document: T): Promise<void> {
+        await this.checkConnection();
+        await this.collection.insertOne(document);
+    }
+
+    async delete(query: Object): Promise<void> {
+        await this.checkConnection();
+        await this.collection.deleteMany(query);
     }
 }

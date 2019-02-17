@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { ApplicationError } from '../../src/models/ApplicationError';
+import { ApplicationError, ErrorCode } from '../../src/models/ApplicationError';
 import { BookService } from '../../src/services/BookService';
 import { IBook } from '../../src/interfaces/IBook';
 import { MongoDao } from '../../src/models/MongoDao';
@@ -20,20 +20,20 @@ describe('Book Service', () => {
     describe('saveBook', () => {
         let spySaveBook: jest.SpyInstance;
 
-        beforeEach(() => spySaveBook = jest.spyOn(MongoDao.prototype, 'save'));
+        beforeEach(() => spySaveBook = jest.spyOn(MongoDao.prototype, 'insertOne'));
 
         afterEach(() => spySaveBook.mockRestore());
         
         test('should save a new book in the database', async () => {
             jest.spyOn(MongoDao.prototype, 'findOne');
-            await BookService.saveBook(book);
+            await BookService.insertBook(book);
             expect(spySaveBook).toHaveBeenCalledWith(book);
         });
 
         test('should throw an error if the book already exists', async () => {
             jest.spyOn(MongoDao.prototype, 'findOne').mockResolvedValue(book);
-            const saveBookPromise = BookService.saveBook(book);
-            await expect(saveBookPromise).rejects.toThrow(ApplicationError.BOOK_ALREADY_EXISTS);
+            const saveBookPromise = BookService.insertBook(book);
+            await expect(saveBookPromise).rejects.toThrow(new ApplicationError(ErrorCode.BOOK_ALREADY_EXISTS));
             expect(spySaveBook).not.toHaveBeenCalled();
         });
     });

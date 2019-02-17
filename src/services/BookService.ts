@@ -1,5 +1,5 @@
 import { ObjectID } from 'mongodb';
-import { ApplicationError } from '../models/ApplicationError';
+import { ApplicationError, ErrorCode } from '../models/ApplicationError';
 import { IBook } from '../interfaces/IBook';
 import { MongoDao } from '../models/MongoDao';
 
@@ -8,12 +8,12 @@ const BookDao = new MongoDao<IBook>('Book');
 /**
  * Save a new book document in the database
  */
-const saveBook = async (newBook: IBook): Promise<void> => {
+const insertBook = async (newBook: IBook): Promise<void> => {
     const sameISBN = await getBookByISBN(newBook.isbn);
     if (sameISBN) {
-        throw new Error(ApplicationError.BOOK_ALREADY_EXISTS);
+        throw new ApplicationError(ErrorCode.BOOK_ALREADY_EXISTS);
     }
-    await BookDao.save(newBook);
+    await BookDao.insertOne(newBook);
 };
 
 /**
@@ -30,7 +30,11 @@ const getBooks = async (): Promise<IBook[]> => {
  */
 const getBookById = async (_id: ObjectID): Promise<IBook> => {
     const book = await BookDao.findOne({ _id });
-    return book;
+    if (book) {
+        return book;
+    } else {
+        throw new ApplicationError(ErrorCode.BOOK_NOT_FOUND_BY_ID);
+    }
 };
 
 /**
@@ -42,7 +46,7 @@ const getBookByISBN = async (isbn: string): Promise<IBook> => {
 };
 
 export const BookService = {
-    saveBook,
+    insertBook,
     getBooks,
     getBookById,
 }

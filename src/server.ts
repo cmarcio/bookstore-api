@@ -1,10 +1,11 @@
 #!/usr/bin/env node
+"use strict";
 
 /**
  * Module dependencies.
  */
 import app from './app';
-import http from 'http';
+import { createServer } from 'http';
 
 /**
  * Get port from environment and store in Express.
@@ -15,7 +16,7 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-const server = http.createServer(app);
+const server = createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
