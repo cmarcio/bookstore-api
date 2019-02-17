@@ -10,18 +10,23 @@ These instructions will get you a copy of the project up and running on your loc
 
 In order to run this project you need to install [Nodejs](https://nodejs.org/en/) and [MongoDB](https://www.mongodb.com/) on your machine.
 
+### Folder structure
+
+.
+
+
 ### Installing
 
 In order to run the project do the following:
 
-Install the project dependencies.
+Install the project dependencies
 
 ```
 $ cd <project-folder>
 $ npm install
 ```
 
-Then you can start the server by running.
+Then you can start the server by running
 
 ```
 $ npm start
@@ -31,7 +36,7 @@ By default the server will start on http://localhost:3000 and create a mongo dat
 
 ## Running the tests
 
-To run the test just enter:
+To run the tests
 
 ```
 $ npm test
@@ -65,3 +70,10 @@ More tests coming in future version.
 * **Márcio Campos** - *Initial work* - [PurpleBooth](https://github.com/marciodscampos)
 
 See also the list of [contributors](https://github.com/marciodscampos/bookstore-api/graphs/contributors) who participated in this project.
+
+
+## Notes
+
+* When the server starts it will also starts a service to get some book data from this [website](https://kotlinlang.org/docs/books.html). The data might take some time to be available in the database, and after that will be update every hour.
+
+* Some configuration is expected to come from environment variables, but have a default value in case they are not provided. I added this to simplify the setup, but in a real cenario it would be very importante to set the environment variables correctely.
