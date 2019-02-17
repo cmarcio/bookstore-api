@@ -8,7 +8,7 @@ import { BookService } from '../services/BookService';
 const postBook = async (req: Request, res: Response, next: NextFunction) => {
     try {
         await BookService.insertBook(req.body);
-        res.sendStatus(201);
+        res.status(201).send(req.body);
     } catch (error) {
         next(error);
     }

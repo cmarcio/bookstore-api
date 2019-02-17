@@ -8,7 +8,7 @@ jest.mock('../../src/models/MongoDao');
 
 const book: IBook = {
     _id: new ObjectId(),
-    name: 'Clean Code',
+    title: 'Clean Code',
     isbn: '9780132350884',
     language: 'en',
     description: `Even bad code can function.
@@ -55,14 +55,14 @@ describe('Book Service', () => {
     describe('getBookById', () => {
         test('should get the book from the database', async () => {
             const findOneSpy = jest.spyOn(MongoDao.prototype, 'findOne').mockResolvedValue(book);
-            const bookFound = await BookService.getBookById(book._id);
+            const bookFound = await BookService.getBookById(book._id.toHexString());
             expect(bookFound).toEqual(book);
             expect(findOneSpy).toHaveBeenCalledWith({ _id: book._id });
         });
 
         test('should return undefined if the book was not found', async () => {
             const findOneSpy = jest.spyOn(MongoDao.prototype, 'findOne');
-            const bookFound = await BookService.getBookById(book._id);
+            const bookFound = await BookService.getBookById(book._id.toHexString());
             expect(bookFound).toBeUndefined;
             expect(findOneSpy).toHaveBeenCalledWith({ _id: book._id });
         });

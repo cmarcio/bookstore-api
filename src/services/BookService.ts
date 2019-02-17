@@ -28,8 +28,8 @@ const getBooks = async (): Promise<IBook[]> => {
 /**
  * Get a book document by the id attribute
  */
-const getBookById = async (_id: ObjectID): Promise<IBook> => {
-    const book = await BookDao.findOne({ _id });
+const getBookById = async (id: string): Promise<IBook> => {
+    const book = await BookDao.findOne({ _id: new ObjectID(id) });
     if (book) {
         return book;
     } else {

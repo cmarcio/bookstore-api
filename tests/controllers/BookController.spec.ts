@@ -8,12 +8,12 @@ const BookDao = new MongoDao('Book');
 
 let bookId: string;
 const book: IBook = {
-    name: 'Design Patterns',
+    title: 'Design Patterns',
     description: `Capturing a wealth of experience about the design of object-oriented software,
-         four top-notch designers present a catalog of simple and succinct solutions to commonly 
-         occurring design problems. Previously undocumented, these 23 patterns allow designers to
-         create more flexible, elegant, and ultimately reusable designs without having to rediscover
-         the design solutions themselves.`,
+        four top-notch designers present a catalog of simple and succinct solutions to commonly
+        occurring design problems. Previously undocumented, these 23 patterns allow designers to
+        create more flexible, elegant, and ultimately reusable designs without having to rediscover
+        the design solutions themselves.`,
     isbn: "0201633612",
     language: 'en'
 };
@@ -40,7 +40,7 @@ describe('Books Costroller', () => {
     });
 
     describe('GET /books', () => {
-        test('should respond with 200', async () => {
+        test('should return the books array', async () => {
             const { body } = await request(app)
                 .get('/books')
                 .expect(200);
@@ -54,13 +54,12 @@ describe('Books Costroller', () => {
         });
     });
 
-    /*describe('GET /book/id', () => {
-        const id = 23;
-
+    describe('GET /books/id', () => {
         test('should respond with 200', async () => {
-            await request(app)
-                .get(`/books/${id}`)
+            const { body } = await request(app)
+                .get(`/books/${bookId}`)
                 .expect(200);
+            expect(book).toEqual({ ...book })
         });
-    });*/
+    });
 });
